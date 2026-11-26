@@ -46,6 +46,24 @@ IF(NOT BUILD_SHARED_LIBS)
 	SET(MB5_STATIC_CFLAGS " -DMB5_STATIC")
 ENDIF(NOT BUILD_SHARED_LIBS)
 
+# A static curl or libxml2 needs the libraries it uses itself, which only
+# its pkg-config file lists: OpenSSL for curl, zlib and iconv for libxml2.
+# Without them nothing links when only the static libraries are installed.
+# vcpkg's CMake configuration brings them itself for MSVC.
+MACRO(MB5_USE_STATIC_LDFLAGS LIBRARY PC_MODULE PC_PREFIX VAR)
+	IF(NOT MSVC AND "${LIBRARY}" MATCHES "\\.a$" AND NOT "${LIBRARY}" MATCHES "\\.dll\\.a$")
+		FIND_PACKAGE(PkgConfig)
+		IF(PKG_CONFIG_FOUND)
+			PKG_CHECK_MODULES(${PC_PREFIX} QUIET ${PC_MODULE})
+			IF(${PC_PREFIX}_FOUND)
+				SET(${VAR} ${${PC_PREFIX}_STATIC_LDFLAGS})
+			ENDIF(${PC_PREFIX}_FOUND)
+		ENDIF(PKG_CONFIG_FOUND)
+	ENDIF()
+ENDMACRO(MB5_USE_STATIC_LDFLAGS)
+MB5_USE_STATIC_LDFLAGS("${CURL_LIBRARY}" libcurl MB5_PC_CURL CURL_LIBRARIES)
+MB5_USE_STATIC_LDFLAGS("${LIBXML2_LIBRARIES}" libxml-2.0 MB5_PC_LIBXML2 LIBXML2_LIBRARIES)
+
 SET(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
 SET(EXEC_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE PATH "Installation prefix for executables and object code libraries" FORCE)
 SET(BIN_INSTALL_DIR ${EXEC_INSTALL_PREFIX}/bin CACHE PATH "Installation prefix for user executables" FORCE)
