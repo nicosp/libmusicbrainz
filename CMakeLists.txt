@@ -36,6 +36,16 @@ IF(NOT WIN32)
 ENDIF(NOT WIN32)
 FIND_PACKAGE(LibXml2 REQUIRED)
 
+OPTION(BUILD_SHARED_LIBS "Build shared libraries (static ones otherwise)" ON)
+
+# With MSVC, programs linking the static libraries must not import the
+# symbols from a DLL (see <musicbrainz5/export.h>)
+SET(MB5_STATIC_CFLAGS "")
+IF(NOT BUILD_SHARED_LIBS)
+	ADD_DEFINITIONS(-DMB5_STATIC)
+	SET(MB5_STATIC_CFLAGS " -DMB5_STATIC")
+ENDIF(NOT BUILD_SHARED_LIBS)
+
 SET(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
 SET(EXEC_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE PATH "Installation prefix for executables and object code libraries" FORCE)
 SET(BIN_INSTALL_DIR ${EXEC_INSTALL_PREFIX}/bin CACHE PATH "Installation prefix for user executables" FORCE)
