@@ -37,8 +37,16 @@
 #include <cstdlib>
 
 #include <string.h>
+#include <chrono>
+
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#else
 #include <unistd.h>
-#include <sys/time.h>
+#endif
 
 #include <curl/curl.h>
 
@@ -288,27 +296,27 @@ void MusicBrainz5::CQuery::WaitRequest() const
 {
 	if (m_d->m_Server.find("musicbrainz.org")!=std::string::npos)
 	{
-		static struct timeval LastRequest;
-		const int TimeBetweenRequests=2;
+		static bool HaveLastRequest=false;
+		static std::chrono::steady_clock::time_point LastRequest;
+		const std::chrono::seconds TimeBetweenRequests(2);
 
-		struct timeval TimeNow;
-		gettimeofday(&TimeNow,0);
+		std::chrono::steady_clock::time_point TimeNow=std::chrono::steady_clock::now();
 
-		if (LastRequest.tv_sec!=0 || LastRequest.tv_usec!=0)
+		if (HaveLastRequest)
 		{
-			struct timeval Diff;
-
-			do
+			while (TimeNow-LastRequest<TimeBetweenRequests)
 			{
-				gettimeofday(&TimeNow,0);
-				timersub(&TimeNow,&LastRequest,&Diff);
-
-				if (Diff.tv_sec<TimeBetweenRequests)
-					usleep(100000);
-			}	while (Diff.tv_sec<TimeBetweenRequests);
+#ifdef _WIN32
+				Sleep(100);
+#else
+				usleep(100000);
+#endif
+				TimeNow=std::chrono::steady_clock::now();
+			}
 		}
 
-		memcpy(&LastRequest,&TimeNow,sizeof(LastRequest));
+		LastRequest=TimeNow;
+		HaveLastRequest=true;
 	}
 }
 
