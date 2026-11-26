@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_USER_RATING_H
 #define _MUSICBRAINZ5_USER_RATING_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 
 #include "musicbrainz5/Entity.h"
@@ -36,7 +38,7 @@ namespace MusicBrainz5
 {
 	class CUserRatingPrivate;
 
-	class CUserRating: public CEntity
+	class MB5_CC_PUBLIC CUserRating: public CEntity
 	{
 	public:
 		CUserRating(const XMLNode& Node);

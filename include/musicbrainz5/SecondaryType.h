@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_SECONDARY_TYPE_H
 #define _MUSICBRAINZ5_SECONDARY_TYPE_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CSecondaryTypePrivate;
 
-	class CSecondaryType: public CEntity
+	class MB5_CC_PUBLIC CSecondaryType: public CEntity
 	{
 	public:
 		CSecondaryType(const XMLNode& Node=XMLNode::emptyNode());

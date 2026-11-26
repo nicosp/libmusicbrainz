@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_LIST_H
 #define _MUSICBRAINZ5_LIST_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 
 #include "musicbrainz5/xmlParser.h"
@@ -34,7 +36,7 @@ namespace MusicBrainz5
 {
 	class CListPrivate;
 
-	class CList: public CEntity
+	class MB5_CC_PUBLIC CList: public CEntity
 	{
 	public:
 		CList();

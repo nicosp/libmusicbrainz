@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_CDSTUB_H
 #define _MUSICBRAINZ5_CDSTUB_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -38,7 +40,7 @@ namespace MusicBrainz5
 {
 	class CCDStubPrivate;
 
-	class CCDStub: public CEntity
+	class MB5_CC_PUBLIC CCDStub: public CEntity
 	{
 	public:
 		CCDStub(const XMLNode& Node);

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_LABEL_INFO_H
 #define _MUSICBRAINZ5_LABEL_INFO_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 
 	class CLabel;
 
-	class CLabelInfo: public CEntity
+	class MB5_CC_PUBLIC CLabelInfo: public CEntity
 	{
 	public:
 		CLabelInfo(const XMLNode& Node=XMLNode::emptyNode());

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ARTIST_H
 #define _MUSICBRAINZ5_ARTIST_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -50,7 +52,7 @@ namespace MusicBrainz5
 	class CRating;
 	class CUserRating;
 
-	class CArtist: public CEntity
+	class MB5_CC_PUBLIC CArtist: public CEntity
 	{
 	public:
 		CArtist(const XMLNode& Node=XMLNode::emptyNode());

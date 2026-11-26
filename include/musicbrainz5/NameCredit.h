@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_NAME_CREDIT_H
 #define _MUSICBRAINZ5_NAME_CREDIT_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 
 	class CArtist;
 
-	class CNameCredit: public CEntity
+	class MB5_CC_PUBLIC CNameCredit: public CEntity
 	{
 	public:
 		CNameCredit(const XMLNode& Node=XMLNode::emptyNode());

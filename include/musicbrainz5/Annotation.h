@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ANNOTATION_H
 #define _MUSICBRAINZ5_ANNOTATION_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CAnnotationPrivate;
 
-	class CAnnotation: public CEntity
+	class MB5_CC_PUBLIC CAnnotation: public CEntity
 	{
 	public:
 		CAnnotation(const XMLNode& Node);

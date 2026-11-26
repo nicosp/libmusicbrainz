@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_MESSAGE_H
 #define _MUSICBRAINZ5_MESSAGE_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CMessagePrivate;
 
-	class CMessage: public CEntity
+	class MB5_CC_PUBLIC CMessage: public CEntity
 	{
 	public:
 		CMessage(const XMLNode& Node);

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RELATION_LIST_H
 #define _MUSICBRAINZ5_RELATION_LIST_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 	class CRelation;
 	class CRelationListPrivate;
 
-	class CRelationList: public CListImpl<CRelation>
+	class MB5_CC_PUBLIC CRelationList: public CListImpl<CRelation>
 	{
 	public:
 		CRelationList(const XMLNode& Node);

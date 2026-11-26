@@ -25,6 +25,9 @@ ENDIF(CMAKE_CROSSCOMPILING)
 IF(NOT CMAKE_CROSSCOMPILING)
 	ADD_EXECUTABLE(make-c-interface make-c-interface.cc xmlParser.cc)
 	TARGET_LINK_LIBRARIES(make-c-interface ${LIBXML2_LIBRARIES})
+	# The generator has its own copy of the XML parser, which it must not
+	# import from the library's DLL
+	SET_PROPERTY(TARGET make-c-interface APPEND PROPERTY COMPILE_DEFINITIONS MB5_STATIC)
 ENDIF(NOT CMAKE_CROSSCOMPILING)
 
 # export the generator target to a file, so it can be imported (see above) by another build
@@ -46,21 +49,26 @@ ADD_CUSTOM_TARGET(src_gen DEPENDS mb5_c.h)
 ADD_LIBRARY(musicbrainz5cc SHARED ${_sources_cc})
 ADD_LIBRARY(musicbrainz5 SHARED ${_sources_c})
 
+# The libraries export what <musicbrainz5/export.h> marks: MB5_CC_PUBLIC
+# and MB5_C_PUBLIC are __declspec(dllexport) on Windows, and elsewhere the
+# libraries are compiled -fvisibility=hidden so nothing else gets out.
 SET_TARGET_PROPERTIES(musicbrainz5cc PROPERTIES
     VERSION ${musicbrainz5_VERSION}
     SOVERSION ${musicbrainz5_SOVERSION}
-    DEFINE_SYMBOL MB_API_EXPORTS
+    DEFINE_SYMBOL MB5_BUILDING_CC
+    CXX_VISIBILITY_PRESET hidden
 )
 
 SET_TARGET_PROPERTIES(musicbrainz5 PROPERTIES
     VERSION ${musicbrainz5c_VERSION}
     SOVERSION ${musicbrainz5c_SOVERSION}
-    DEFINE_SYMBOL MB_API_EXPORTS
+    DEFINE_SYMBOL MB5_BUILDING_C
+    CXX_VISIBILITY_PRESET hidden
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
-	SET_TARGET_PROPERTIES(musicbrainz5 PROPERTIES
-		DEFINE_SYMBOL _MB5_DEBUG_
+	SET_PROPERTY(TARGET musicbrainz5 APPEND PROPERTY
+		COMPILE_DEFINITIONS _MB5_DEBUG_
 	)
 	IF(CMAKE_COMPILER_IS_GNUCXX)
 		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ggdb -O0")

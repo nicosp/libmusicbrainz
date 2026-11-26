@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ARTIST_CREDIT_H
 #define _MUSICBRAINZ5_ARTIST_CREDIT_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 
 #include "musicbrainz5/Entity.h"
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CArtistCreditPrivate;
 
-	class CArtistCredit: public CEntity
+	class MB5_CC_PUBLIC CArtistCredit: public CEntity
 	{
 	public:
 		CArtistCredit(const XMLNode& Node=XMLNode::emptyNode());

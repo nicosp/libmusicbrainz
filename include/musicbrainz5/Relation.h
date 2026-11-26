@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RELATION_H
 #define _MUSICBRAINZ5_RELATION_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -45,7 +47,7 @@ namespace MusicBrainz5
 	class CLabel;
 	class CWork;
 
-	class CRelation: public CEntity
+	class MB5_CC_PUBLIC CRelation: public CEntity
 	{
 	public:
 		CRelation(const XMLNode& Node=XMLNode::emptyNode());

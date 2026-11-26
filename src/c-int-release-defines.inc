@@ -32,5 +32,5 @@
  * @return #Mb5MediumList.  This object <b>must</b> be deleted once
  *				finished with.
  */
-	Mb5MediumList mb5_release_media_matching_discid(Mb5Release Release, const char *DiscID);
+	MB5_C_PUBLIC Mb5MediumList mb5_release_media_matching_discid(Mb5Release Release, const char *DiscID);
 

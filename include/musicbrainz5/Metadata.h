@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_METADATA_H
 #define _MUSICBRAINZ5_METADATA_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 #include "musicbrainz5/ReleaseList.h"
 #include "musicbrainz5/ArtistList.h"
@@ -66,7 +68,7 @@ namespace MusicBrainz5
 	class CCDStub;
 	class CMessage;
 
-	class CMetadata: public CEntity
+	class MB5_CC_PUBLIC CMetadata: public CEntity
 	{
 	public:
 		CMetadata(const XMLNode& Node=XMLNode::emptyNode());

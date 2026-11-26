@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RATING_H
 #define _MUSICBRAINZ5_RATING_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 
 #include "musicbrainz5/Entity.h"
@@ -36,7 +38,7 @@ namespace MusicBrainz5
 {
 	class CRatingPrivate;
 
-	class CRating: public CEntity
+	class MB5_CC_PUBLIC CRating: public CEntity
 	{
 	public:
 		CRating(const XMLNode& Node=XMLNode::emptyNode());

@@ -196,7 +196,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_attributes_size(Mb5Entity Entity);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_attributes_size(Mb5Entity Entity);" << std::endl;
 	Include << std::endl;
 
 	Include << "/**" << std::endl;
@@ -209,7 +209,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_attribute_name(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_attribute_name(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
 	Include << std::endl;
 
 	Include << "/**" << std::endl;
@@ -222,7 +222,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_attribute_value(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_attribute_value(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
 	Include << std::endl;
 
 	Include << "/**" << std::endl;
@@ -232,7 +232,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_elements_size(Mb5Entity Entity);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_elements_size(Mb5Entity Entity);" << std::endl;
 	Include << std::endl;
 
 	Include << "/**" << std::endl;
@@ -245,7 +245,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_element_name(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_element_name(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
 	Include << std::endl;
 
 	Include << "/**" << std::endl;
@@ -258,7 +258,7 @@ void ProcessEntity(const XMLNode& /*Node*/, std::ofstream& Source, std::ofstream
 	Include << " *" << std::endl;
 	Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 	Include << " */" << std::endl;
-	Include << "  int mb5_entity_ext_element_value(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
+	Include << "  MB5_C_PUBLIC int mb5_entity_ext_element_value(Mb5Entity Entity, int Item, char *str, int len);" << std::endl;
 	Include << std::endl;
 
 	Source << "  MB5_C_EXT_GETTER(Attribute,attribute)" << std::endl;
@@ -283,7 +283,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 		Include << "*" << std::endl;
 		Include << "* @param " << UpperName << " Object to delete" << std::endl;
 		Include << "*/" << std::endl;
-		Include << "  void mb5_" << LowerName << "_delete(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+		Include << "  MB5_C_PUBLIC void mb5_" << LowerName << "_delete(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 		Include << std::endl;
 
 		Source << "  MB5_C_DELETE(" << UpperName << "," << LowerName << ")" << std::endl;
@@ -296,7 +296,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 		Include << "* @return Cloned object. This object <b>must</b> be deleted once" << std::endl;
 		Include << "*				finished with." << std::endl;
 		Include << "*/" << std::endl;
-		Include << "  Mb5" << UpperName << " mb5_" << LowerName << "_clone(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+		Include << "  MB5_C_PUBLIC Mb5" << UpperName << " mb5_" << LowerName << "_clone(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 		Include << std::endl;
 
 		Source << "  MB5_C_CLONE(" << UpperName << "," << LowerName << ")" << std::endl;
@@ -357,7 +357,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  ";
+						Include << "  MB5_C_PUBLIC ";
 
 						if (Deprecated)
 							Include << "LIBMB5_DEPRECATED(" << Replacement << ") ";
@@ -376,7 +376,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return Returned value" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  int mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC int mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_INT_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -390,7 +390,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return Returned value" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  double mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC double mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_DOUBLE_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -404,7 +404,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return #Mb5" << PropertyUpperName << " object" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  Mb5" << PropertyUpperName << " mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC Mb5" << PropertyUpperName << " mb5_" << LowerName << "_get_" << PropertyLowerName << "(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_OBJ_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -418,7 +418,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return #Mb5" << PropertyUpperName << "List object" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_OBJ_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "List," << PropertyLowerName << "list)" << std::endl;
@@ -432,7 +432,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return #Mb5" << PropertyUpperName << "List object" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_OBJ_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "List," << PropertyLowerName << "list)" << std::endl;
@@ -446,7 +446,7 @@ void ProcessClass(const XMLNode& Node, std::ofstream& Source, std::ofstream& Inc
 						Include << " *" << std::endl;
 						Include << " * @return #Mb5" << PropertyUpperName << "List object" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
+						Include << "  MB5_C_PUBLIC Mb5" << PropertyUpperName << "List mb5_" << LowerName << "_get_" << PropertyLowerName << "list(Mb5" << UpperName << " " << UpperName << ");" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_OBJ_GETTER(" << UpperName << "," << LowerName << "," << PropertyUpperName << "List," << PropertyLowerName << "list)" << std::endl;
@@ -491,14 +491,14 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 		Include << " *" << std::endl;
 		Include << " * @param List List to delete" << std::endl;
 		Include << " */" << std::endl;
-		Include << "  void mb5_" << LowerName << "_list_delete(Mb5" << UpperName << "List List);" << std::endl;
+		Include << "  MB5_C_PUBLIC void mb5_" << LowerName << "_list_delete(Mb5" << UpperName << "List List);" << std::endl;
 		Include << std::endl;
 		Include << "/**" << std::endl;
 		Include << " * Return the number of entries in a #Mb5" << UpperName << "List" << std::endl;
 		Include << " *" << std::endl;
 		Include << " * @param	List List to use" << std::endl;
 		Include << " */" << std::endl;
-		Include << "  int mb5_" << LowerName << "_list_size(Mb5" << UpperName << "List List);" << std::endl;
+		Include << "  MB5_C_PUBLIC int mb5_" << LowerName << "_list_size(Mb5" << UpperName << "List List);" << std::endl;
 		Include << std::endl;
 		Include << "/**" << std::endl;
 		Include << " * Returns an entry from a #Mb5" << UpperName << "List" << std::endl;
@@ -508,21 +508,21 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 		Include << " *" << std::endl;
 		Include << " * @return A #Mb5" << UpperName << " object." << std::endl;
 		Include << " */" << std::endl;
-		Include << "  Mb5" << UpperName << " mb5_" << LowerName << "_list_item(Mb5" << UpperName << "List List, int Item);" << std::endl;
+		Include << "  MB5_C_PUBLIC Mb5" << UpperName << " mb5_" << LowerName << "_list_item(Mb5" << UpperName << "List List, int Item);" << std::endl;
 		Include << std::endl;
 		Include << "/**" << std::endl;
 		Include << " *	Return the count of entries in an #Mb5" << UpperName << "List" << std::endl;
 		Include << " *" << std::endl;
 		Include << " * @param	List List to use" << std::endl;
 		Include << " */" << std::endl;
-		Include << "	int mb5_" << LowerName << "_list_get_count(Mb5" << UpperName << "List List);" << std::endl;
+		Include << "	MB5_C_PUBLIC int mb5_" << LowerName << "_list_get_count(Mb5" << UpperName << "List List);" << std::endl;
 		Include << std::endl;
 		Include << "/**" << std::endl;
 		Include << " *	Return the offset of entries in an #Mb5" << UpperName << "List" << std::endl;
 		Include << " *" << std::endl;
 		Include << " * @param	List List to use" << std::endl;
 		Include << " */" << std::endl;
-		Include << "	int mb5_" << LowerName << "_list_get_offset(Mb5" << UpperName << "List List);" << std::endl;
+		Include << "	MB5_C_PUBLIC int mb5_" << LowerName << "_list_get_offset(Mb5" << UpperName << "List List);" << std::endl;
 		Include << std::endl;
 
 		Source << "  MB5_C_LIST_GETTER(" << UpperName << "," << LowerName << ")" << std::endl;
@@ -535,7 +535,7 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 		Include << "* @return Cloned list. This list <b>must</b> be deleted once" << std::endl;
 		Include << "*				finished with." << std::endl;
 		Include << "*/" << std::endl;
-		Include << "  Mb5" << UpperName << "List mb5_" << LowerName << "_list_clone(Mb5" << UpperName << "List " << UpperName << "List" << ");" << std::endl;
+		Include << "  MB5_C_PUBLIC Mb5" << UpperName << "List mb5_" << LowerName << "_list_clone(Mb5" << UpperName << "List " << UpperName << "List" << ");" << std::endl;
 		Include << std::endl;
 
 		Source << "  MB5_C_CLONE(" << UpperName << "List," << LowerName << "_list)" << std::endl;
@@ -571,7 +571,7 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 						Include << " *" << std::endl;
 						Include << " * @return The number of characters in the string to copy (not including terminating NULL)" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List, char *str, int len);" << std::endl;
+						Include << "  MB5_C_PUBLIC int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List, char *str, int len);" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_STR_GETTER(" << UpperName << "List," << LowerName << "_list," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -585,7 +585,7 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 						Include << " *" << std::endl;
 						Include << " * @return Returned value" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
+						Include << "  MB5_C_PUBLIC int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_INT_GETTER(" << UpperName << "List," << LowerName << "_list," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -599,7 +599,7 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 						Include << " *" << std::endl;
 						Include << " * @return Returned value" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  double mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
+						Include << "  MB5_C_PUBLIC double mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_DOUBLE_GETTER(" << UpperName << "List," << LowerName << "_list," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;
@@ -613,7 +613,7 @@ void ProcessList(const XMLNode& Node, std::ofstream& Source, std::ofstream& Incl
 						Include << " *" << std::endl;
 						Include << " * @return #Mb5" << PropertyUpperName << " object" << std::endl;
 						Include << " */" << std::endl;
-						Include << "  int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
+						Include << "  MB5_C_PUBLIC int mb5_" << LowerName << "_list_get_" << PropertyLowerName << "(Mb5" << UpperName << "List List);" << std::endl;
 						Include << std::endl;
 
 						Source << "  MB5_C_OBJ_GETTER(" << UpperName << "List," << LowerName << "_list," << PropertyUpperName << "," << PropertyLowerName << ")" << std::endl;

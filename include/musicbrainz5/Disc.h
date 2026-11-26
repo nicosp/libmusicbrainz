@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_DISC_H
 #define _MUSICBRAINZ5_DISC_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 #include "musicbrainz5/OffsetList.h"
 #include "musicbrainz5/ReleaseList.h"
@@ -41,7 +43,7 @@ namespace MusicBrainz5
 {
 	class CDiscPrivate;
 
-	class CDisc: public CEntity
+	class MB5_CC_PUBLIC CDisc: public CEntity
 	{
 	public:
 		CDisc(const XMLNode& Node=XMLNode::emptyNode());

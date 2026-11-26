@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RELEASE_GROUP_H
 #define _MUSICBRAINZ5_RELEASE_GROUP_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -47,7 +49,7 @@ namespace MusicBrainz5
 	class CUserRating;
 	class CSecondaryType;
 
-	class CReleaseGroup: public CEntity
+	class MB5_CC_PUBLIC CReleaseGroup: public CEntity
 	{
 	public:
 		CReleaseGroup(const XMLNode& Node=XMLNode::emptyNode());

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ENTITY_H
 #define _MUSICBRAINZ5_ENTITY_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 
 	class CRelationListList;
 
-	class CEntity
+	class MB5_CC_PUBLIC CEntity
 	{
 	public:
 		CEntity();
@@ -116,6 +118,6 @@ namespace MusicBrainz5
 	};
 }
 
-std::ostream& operator << (std::ostream& os, const MusicBrainz5::CEntity& Entity);
+MB5_CC_PUBLIC std::ostream& operator << (std::ostream& os, const MusicBrainz5::CEntity& Entity);
 
 #endif

@@ -25,6 +25,8 @@
 #ifndef _MUSICBRAINZ5_XMLPARSER_H
 #define _MUSICBRAINZ5_XMLPARSER_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 
 struct _xmlNode;
@@ -42,13 +44,13 @@ struct XMLResults
     int line;
     int code;
 
-    XMLResults();
+    MB5_CC_PUBLIC XMLResults();
 };
 
 const int eXMLErrorNone = 0;
 
 class XMLAttribute;
-class XMLNode
+class MB5_CC_PUBLIC XMLNode
 {
     public:
         static XMLNode emptyNode();
@@ -75,9 +77,9 @@ class XMLNode
         xmlAttrPtr getAttributeRaw(const char *name) const;
 };
 
-bool operator !=(const XMLNode &lhs, const XMLNode &rhs);
+MB5_CC_PUBLIC bool operator !=(const XMLNode &lhs, const XMLNode &rhs);
 
-class XMLRootNode: public XMLNode
+class MB5_CC_PUBLIC XMLRootNode: public XMLNode
 {
     public:
         static XMLNode* parseString(const std::string &xml, XMLResults *results);
@@ -91,7 +93,7 @@ class XMLRootNode: public XMLNode
         xmlDocPtr mDoc;
 };
 
-class XMLAttribute
+class MB5_CC_PUBLIC XMLAttribute
 {
     public:
         bool isEmpty() const;

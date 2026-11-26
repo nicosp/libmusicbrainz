@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RELEASE_H
 #define _MUSICBRAINZ5_RELEASE_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 #include "musicbrainz5/LabelInfoList.h"
 #include "musicbrainz5/RelationList.h"
@@ -46,7 +48,7 @@ namespace MusicBrainz5
 	class CReleaseGroup;
 	class CMedium;
 
-	class CRelease: public CEntity
+	class MB5_CC_PUBLIC CRelease: public CEntity
 	{
 	public:
 		CRelease(const XMLNode& Node=XMLNode::emptyNode());

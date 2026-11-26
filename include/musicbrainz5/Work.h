@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_WORK_H
 #define _MUSICBRAINZ5_WORK_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 
 #include "musicbrainz5/Entity.h"
@@ -46,7 +48,7 @@ namespace MusicBrainz5
 	class CRating;
 	class CUserRating;
 
-	class CWork: public CEntity
+	class MB5_CC_PUBLIC CWork: public CEntity
 	{
 	public:
 		CWork(const XMLNode& Node=XMLNode::emptyNode());

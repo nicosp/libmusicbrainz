@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RECORDING_H
 #define _MUSICBRAINZ5_RECORDING_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -52,7 +54,7 @@ namespace MusicBrainz5
 	class CRating;
 	class CUserRating;
 
-	class CRecording: public CEntity
+	class MB5_CC_PUBLIC CRecording: public CEntity
 	{
 	public:
 		CRecording(const XMLNode& Node=XMLNode::emptyNode());

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_MEDIUM_LIST_H
 #define _MUSICBRAINZ5_MEDIUM_LIST_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 	class CMedium;
 	class CMediumListPrivate;
 
-	class CMediumList: public CListImpl<CMedium>
+	class MB5_CC_PUBLIC CMediumList: public CListImpl<CMedium>
 	{
 	public:
 		CMediumList(const XMLNode& Node=XMLNode::emptyNode());
