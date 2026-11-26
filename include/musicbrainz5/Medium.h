@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_MEDIUM_H
 #define _MUSICBRAINZ5_MEDIUM_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 {
 	class CMediumPrivate;
 
-	class CMedium: public CEntity
+	class MB5_CC_PUBLIC CMedium: public CEntity
 	{
 	public:
 		CMedium(const XMLNode& Node=XMLNode::emptyNode());

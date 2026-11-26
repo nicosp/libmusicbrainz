@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_PUID_H
 #define _MUSICBRAINZ5_PUID_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 
 #include "musicbrainz5/Entity.h"
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CPUIDPrivate;
 
-	class CPUID: public CEntity
+	class MB5_CC_PUBLIC CPUID: public CEntity
 	{
 	public:
 		CPUID(const XMLNode& Node=XMLNode::emptyNode());

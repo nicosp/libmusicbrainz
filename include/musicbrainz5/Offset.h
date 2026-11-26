@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_OFFSET_H
 #define _MUSICBRAINZ5_OFFSET_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class COffsetPrivate;
 
-	class COffset: public CEntity
+	class MB5_CC_PUBLIC COffset: public CEntity
 	{
 	public:
 		COffset(const XMLNode& Node=XMLNode::emptyNode());

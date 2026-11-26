@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_COLLECTION_H
 #define _MUSICBRAINZ5_COLLECTION_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 #include "musicbrainz5/ReleaseList.h"
 
@@ -35,7 +37,7 @@ namespace MusicBrainz5
 {
 	class CCollectionPrivate;
 
-	class CCollection: public CEntity
+	class MB5_CC_PUBLIC CCollection: public CEntity
 	{
 	public:
 		CCollection(const XMLNode& Node);

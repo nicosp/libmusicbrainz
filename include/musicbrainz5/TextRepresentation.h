@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_TEXT_REPRESENTATION_H
 #define _MUSICBRAINZ5_TEXT_REPRESENTATION_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 #include <string>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CTextRepresentationPrivate;
 
-	class CTextRepresentation: public CEntity
+	class MB5_CC_PUBLIC CTextRepresentation: public CEntity
 	{
 	public:
 		CTextRepresentation(const XMLNode& Node=XMLNode::emptyNode());

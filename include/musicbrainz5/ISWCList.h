@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ISWC_LIST_H
 #define _MUSICBRAINZ5_ISWC_LIST_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -39,7 +41,7 @@ namespace MusicBrainz5
 	class CISWC;
 	class CISWCListPrivate;
 
-	class CISWCList: public CListImpl<CISWC>
+	class MB5_CC_PUBLIC CISWCList: public CListImpl<CISWC>
 	{
 	public:
 		CISWCList(const XMLNode& Node=XMLNode::emptyNode());

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ATTRIBUTE_H
 #define _MUSICBRAINZ5_ATTRIBUTE_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CAttributePrivate;
 
-	class CAttribute: public CEntity
+	class MB5_CC_PUBLIC CAttribute: public CEntity
 	{
 	public:
 		CAttribute(const XMLNode& Node=XMLNode::emptyNode());

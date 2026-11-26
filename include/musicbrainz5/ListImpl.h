@@ -26,12 +26,14 @@
 #ifndef _MUSICBRAINZ5_LIST_IMPL_H
 #define _MUSICBRAINZ5_LIST_IMPL_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/List.h"
 
 namespace MusicBrainz5
 {
 	template <class T>
-	class CListImpl: public CList
+	class MB5_CC_INLINE CListImpl: public CList
 	{
 	public:
 		CListImpl(const XMLNode& Node=XMLNode::emptyNode())

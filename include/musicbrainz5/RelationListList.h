@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_RELATIONLIST_GROUP_H
 #define _MUSICBRAINZ5_RELATIONLIST_GROUP_H
 
+#include "musicbrainz5/export.h"
+
 #include <iostream>
 
 #include "musicbrainz5/xmlParser.h"
@@ -36,7 +38,7 @@ namespace MusicBrainz5
 
 	class CRelationList;
 
-	class CRelationListList
+	class MB5_CC_PUBLIC CRelationListList
 	{
 	public:
 		CRelationListList();
@@ -59,6 +61,6 @@ namespace MusicBrainz5
 	};
 }
 
-std::ostream& operator << (std::ostream& os, const MusicBrainz5::CRelationListList& RelationListList);
+MB5_CC_PUBLIC std::ostream& operator << (std::ostream& os, const MusicBrainz5::CRelationListList& RelationListList);
 
 #endif

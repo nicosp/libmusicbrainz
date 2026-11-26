@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_QUERY_H
 #define _MUSICBRAINZ5_QUERY_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/defines.h"
 
 #include "musicbrainz5/Entity.h"
@@ -182,7 +184,7 @@ namespace MusicBrainz5
 	 * library. Users of the C library should take note of the documentation for each
 	 * individual function in mb5_c.h
 	 */
-	class CQuery
+	class MB5_CC_PUBLIC CQuery
 	{
 	public:
 		typedef std::map<std::string,std::string> tParamMap;

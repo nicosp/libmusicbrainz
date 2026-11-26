@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_FREEDB_DISC_H
 #define _MUSICBRAINZ5_FREEDB_DISC_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -38,7 +40,7 @@ namespace MusicBrainz5
 {
 	class CFreeDBDiscPrivate;
 
-	class CFreeDBDisc: public CEntity
+	class MB5_CC_PUBLIC CFreeDBDisc: public CEntity
 	{
 	public:
 		CFreeDBDisc(const XMLNode& Node);

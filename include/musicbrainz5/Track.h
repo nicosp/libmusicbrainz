@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_TRACK_H
 #define _MUSICBRAINZ5_TRACK_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -40,7 +42,7 @@ namespace MusicBrainz5
 	class CRecording;
 	class CArtistCredit;
 
-	class CTrack: public CEntity
+	class MB5_CC_PUBLIC CTrack: public CEntity
 	{
 	public:
 		CTrack(const XMLNode& Node=XMLNode::emptyNode());

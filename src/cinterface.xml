@@ -45,6 +45,7 @@
 #define _MUSICBRAINZ5_MB_C_H
 
 #include "musicbrainz5/defines.h"
+#include "musicbrainz5/export.h"
 
 #ifdef __cplusplus
 extern "C"

@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_USER_TAG_H
 #define _MUSICBRAINZ5_USER_TAG_H
 
+#include "musicbrainz5/export.h"
+
 #include <string>
 #include <iostream>
 
@@ -37,7 +39,7 @@ namespace MusicBrainz5
 {
 	class CUserTagPrivate;
 
-	class CUserTag: public CEntity
+	class MB5_CC_PUBLIC CUserTag: public CEntity
 	{
 	public:
 		CUserTag(const XMLNode& Node);

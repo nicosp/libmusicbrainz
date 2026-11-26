@@ -26,6 +26,8 @@
 #ifndef _MUSICBRAINZ5_ISRC_H
 #define _MUSICBRAINZ5_ISRC_H
 
+#include "musicbrainz5/export.h"
+
 #include "musicbrainz5/Entity.h"
 #include "musicbrainz5/RecordingList.h"
 
@@ -35,7 +37,7 @@ namespace MusicBrainz5
 {
 	class CISRCPrivate;
 
-	class CISRC: public CEntity
+	class MB5_CC_PUBLIC CISRC: public CEntity
 	{
 	public:
 		CISRC(const XMLNode& Node=XMLNode::emptyNode());
