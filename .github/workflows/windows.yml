@@ -1,0 +1,86 @@
+name: Windows
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  msvc:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shared: [ON, OFF]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg" install curl libxml2 --triplet x64-windows
+
+      - name: Build
+        shell: pwsh
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release `
+            -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX="$($PWD -replace '\\', '/')/prefix" `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT\scripts\buildsystems\vcpkg.cmake"
+          cmake --build build
+
+      - name: Look up a disc
+        shell: pwsh
+        run: |
+          $env:PATH = "$PWD\build\src;$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin;$env:PATH"
+          build\examples\cdlookup_c.exe arIS30RPWowvwNEqsqdDnZzDGhk-
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          build\examples\cdlookup.exe arIS30RPWowvwNEqsqdDnZzDGhk-
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Install
+        shell: pwsh
+        run: |
+          # The install directories are made absolute from the prefix given
+          # when configuring, so it can't be changed here
+          cmake --install build
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          if ("${{ matrix.shared }}" -eq "ON") {
+            foreach ($dll in "musicbrainz5.dll", "musicbrainz5cc.dll") {
+              if (-not (Test-Path "prefix/bin/$dll")) { Write-Error "$dll not installed in bin"; exit 1 }
+            }
+          }
+          Get-ChildItem -Recurse prefix/bin, prefix/lib | Select-Object -ExpandProperty FullName
+
+      - name: Show exports
+        if: matrix.shared == 'ON'
+        shell: pwsh
+        run: |
+          dumpbin /exports build\src\musicbrainz5.dll | Select-String mb5_ | Measure-Object | Select-Object -ExpandProperty Count
+          dumpbin /exports build\src\musicbrainz5cc.dll | Select-String MusicBrainz5 | Measure-Object | Select-Object -ExpandProperty Count
+
+  mingw:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: >-
+            mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-curl mingw-w64-x86_64-libxml2
+
+      - name: Build
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+
+      - name: Look up a disc
+        run: |
+          export PATH="$PWD/build/src:$PATH"
+          build/examples/cdlookup_c.exe arIS30RPWowvwNEqsqdDnZzDGhk-
+          build/examples/cdlookup.exe arIS30RPWowvwNEqsqdDnZzDGhk-
