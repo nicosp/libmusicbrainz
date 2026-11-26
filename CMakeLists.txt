@@ -70,6 +70,23 @@ SET(BIN_INSTALL_DIR ${EXEC_INSTALL_PREFIX}/bin CACHE PATH "Installation prefix f
 SET(LIB_INSTALL_DIR ${EXEC_INSTALL_PREFIX}/lib${LIB_SUFFIX} CACHE PATH  "Installation prefix for object code libraries" FORCE)
 SET(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Installation prefix for C header files" FORCE)
 
+# A program in C linking the static C++ library needs the C++ runtime,
+# which only the C++ compiler links by itself: list the libraries it adds
+# beyond the C compiler's (-lstdc++ with GCC, -lc++ on macOS)
+SET(MB5_CXX_RUNTIME_LIBS "")
+FOREACH(LIB ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
+	LIST(FIND CMAKE_C_IMPLICIT_LINK_LIBRARIES "${LIB}" MB5_IN_C)
+	# The compiler's own runtime is linked by any compiler driver, and
+	# libgcc_s has no static library to link a static program with
+	IF(MB5_IN_C EQUAL -1 AND NOT LIB MATCHES "^(gcc|gcc_s|gcc_eh|c)$|_asneeded$")
+		IF(LIB MATCHES "^-" OR IS_ABSOLUTE "${LIB}")
+			SET(MB5_CXX_RUNTIME_LIBS "${MB5_CXX_RUNTIME_LIBS} ${LIB}")
+		ELSE()
+			SET(MB5_CXX_RUNTIME_LIBS "${MB5_CXX_RUNTIME_LIBS} -l${LIB}")
+		ENDIF()
+	ENDIF()
+ENDFOREACH(LIB)
+
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/libmusicbrainz5.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/libmusicbrainz5.pc)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/libmusicbrainz5cc.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/libmusicbrainz5cc.pc)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
