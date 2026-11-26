@@ -28,6 +28,7 @@
 
 #include "musicbrainz5/HTTPFetch.h"
 
+#include <cstdlib>
 #include <sstream>
 
 #include <curl/curl.h>
@@ -38,7 +39,6 @@
 	typedef CRITICAL_SECTION tLock;
 
 	static void initLock(tLock *Lock) { InitializeCriticalSection(Lock); }
-	static void destroyLock(tLock *Lock) { DeleteCriticalSection(Lock); }
 	static void lock(tLock *Lock) { EnterCriticalSection(Lock); }
 	static void unlock(tLock *Lock) { LeaveCriticalSection(Lock); }
 #else
@@ -74,11 +74,10 @@ static void unlockSharedData(CURL *handle, curl_lock_data data, void *userptr)
 	unlock(&SharedLocks[data]);
 }
 
-#if defined(__GNUC__)
-__attribute__((constructor))
-#else
-	#error Non GCC compiler detected
+#ifndef _WIN32
+static void destroy_curl();
 #endif
+
 static void initialize_curl()
 {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -97,13 +96,16 @@ static void initialize_curl()
 		curl_share_setopt(SharedData, CURLSHOPT_SHARE, CURL_LOCK_DATA_CONNECT);
 #endif
 	}
+
+	// In a Windows DLL atexit() handlers run while the DLL is unloaded,
+	// under the loader lock, where curl must not be cleaned up either.
+	// Windows frees everything when the process exits anyway.
+#ifndef _WIN32
+	atexit(destroy_curl);
+#endif
 }
 
-#if defined(__GNUC__)
-__attribute__((destructor))
-#else
-	#error Non GCC compiler detected
-#endif
+#ifndef _WIN32
 static void destroy_curl()
 {
 	if (SharedData)
@@ -116,6 +118,17 @@ static void destroy_curl()
 		destroyLock(&SharedLocks[Lock]);
 
 	curl_global_cleanup();
+}
+#endif
+
+// Set up curl on first use rather than when the library is loaded: in a
+// Windows DLL that would run under the loader lock, where curl must not
+// be initialised.  Since C++11 the static is initialised once even when
+// requests start on several threads at the same time.
+static void ensure_curl_initialized()
+{
+	static const bool Initialized=(initialize_curl(),true);
+	(void)Initialized;
 }
 
 class MusicBrainz5::CHTTPFetchPrivate
@@ -266,6 +279,8 @@ int MusicBrainz5::CHTTPFetch::Fetch(const std::string& URL, const std::string& R
 	m_d->m_Status=0;
 	m_d->m_StatusLine.clear();
 	m_d->m_ErrorMessage.clear();
+
+	ensure_curl_initialized();
 
 	CURL *curl=curl_easy_init();
 	if (curl)
