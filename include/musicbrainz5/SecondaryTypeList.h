@@ -30,6 +30,7 @@
 #include <iostream>
 
 #include "musicbrainz5/ListImpl.h"
+#include "musicbrainz5/SecondaryType.h"
 
 #include "musicbrainz5/xmlParser.h"
 
