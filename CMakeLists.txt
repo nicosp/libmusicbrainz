@@ -49,7 +49,10 @@ ENDIF(NOT BUILD_SHARED_LIBS)
 # A static curl or libxml2 needs the libraries it uses itself, which only
 # its pkg-config file lists: OpenSSL for curl, zlib and iconv for libxml2.
 # Without them nothing links when only the static libraries are installed.
-# vcpkg's CMake configuration brings them itself for MSVC.
+# On Windows their headers must also be told the library is static
+# (CURL_STATICLIB, LIBXML_STATIC), or they declare it dllimport; the
+# pkg-config files give that in their static compile flags.  vcpkg's CMake
+# configuration brings all of it itself for MSVC.
 MACRO(MB5_USE_STATIC_LDFLAGS LIBRARY PC_MODULE PC_PREFIX VAR)
 	IF(NOT MSVC AND "${LIBRARY}" MATCHES "\\.a$" AND NOT "${LIBRARY}" MATCHES "\\.dll\\.a$")
 		FIND_PACKAGE(PkgConfig)
@@ -57,6 +60,9 @@ MACRO(MB5_USE_STATIC_LDFLAGS LIBRARY PC_MODULE PC_PREFIX VAR)
 			PKG_CHECK_MODULES(${PC_PREFIX} QUIET ${PC_MODULE})
 			IF(${PC_PREFIX}_FOUND)
 				SET(${VAR} ${${PC_PREFIX}_STATIC_LDFLAGS})
+				IF(${PC_PREFIX}_STATIC_CFLAGS_OTHER)
+					ADD_COMPILE_OPTIONS(${${PC_PREFIX}_STATIC_CFLAGS_OTHER})
+				ENDIF()
 			ENDIF(${PC_PREFIX}_FOUND)
 		ENDIF(PKG_CONFIG_FOUND)
 	ENDIF()
