@@ -46,8 +46,8 @@ ADD_CUSTOM_COMMAND(
 
 ADD_CUSTOM_TARGET(src_gen DEPENDS mb5_c.h)
 
-ADD_LIBRARY(musicbrainz5cc SHARED ${_sources_cc})
-ADD_LIBRARY(musicbrainz5 SHARED ${_sources_c})
+ADD_LIBRARY(musicbrainz5cc ${_sources_cc})
+ADD_LIBRARY(musicbrainz5 ${_sources_c})
 
 # The libraries export what <musicbrainz5/export.h> marks: MB5_CC_PUBLIC
 # and MB5_C_PUBLIC are __declspec(dllexport) on Windows, and elsewhere the

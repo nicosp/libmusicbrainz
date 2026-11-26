@@ -9,5 +9,5 @@ URL: http://musicbrainz.org/doc/libmusicbrainz
 Version: ${PROJECT_VERSION}
 Requires.private: libcurl libxml-2.0
 Libs: -L${LIB_INSTALL_DIR} -lmusicbrainz5cc
-Cflags: -I${INCLUDE_INSTALL_DIR}
+Cflags: -I${INCLUDE_INSTALL_DIR}${MB5_STATIC_CFLAGS}
 
