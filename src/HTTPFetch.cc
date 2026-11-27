@@ -28,28 +28,107 @@
 
 #include "musicbrainz5/HTTPFetch.h"
 
+#include <cstdlib>
 #include <sstream>
 
 #include <curl/curl.h>
 
-#if defined(__GNUC__)
-__attribute__((constructor))
+#ifdef _WIN32
+	#include <windows.h>
+
+	typedef CRITICAL_SECTION tLock;
+
+	static void initLock(tLock *Lock) { InitializeCriticalSection(Lock); }
+	static void lock(tLock *Lock) { EnterCriticalSection(Lock); }
+	static void unlock(tLock *Lock) { LeaveCriticalSection(Lock); }
 #else
-	#error Non GCC compiler detected
+	#include <pthread.h>
+
+	typedef pthread_mutex_t tLock;
+
+	static void initLock(tLock *Lock) { pthread_mutex_init(Lock,0); }
+	static void destroyLock(tLock *Lock) { pthread_mutex_destroy(Lock); }
+	static void lock(tLock *Lock) { pthread_mutex_lock(Lock); }
+	static void unlock(tLock *Lock) { pthread_mutex_unlock(Lock); }
 #endif
+
+// Connections, DNS lookups and TLS sessions are shared between all requests
+// made by the library, so consecutive requests can reuse the same connection
+static CURLSH *SharedData=0;
+static tLock SharedLocks[CURL_LOCK_DATA_LAST];
+
+static void lockSharedData(CURL *handle, curl_lock_data data, curl_lock_access access, void *userptr)
+{
+	(void)handle;
+	(void)access;
+	(void)userptr;
+
+	lock(&SharedLocks[data]);
+}
+
+static void unlockSharedData(CURL *handle, curl_lock_data data, void *userptr)
+{
+	(void)handle;
+	(void)userptr;
+
+	unlock(&SharedLocks[data]);
+}
+
+#ifndef _WIN32
+static void destroy_curl();
+#endif
+
 static void initialize_curl()
 {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
+
+	for (int Lock=0;Lock<CURL_LOCK_DATA_LAST;Lock++)
+		initLock(&SharedLocks[Lock]);
+
+	SharedData=curl_share_init();
+	if (SharedData)
+	{
+		curl_share_setopt(SharedData, CURLSHOPT_LOCKFUNC, lockSharedData);
+		curl_share_setopt(SharedData, CURLSHOPT_UNLOCKFUNC, unlockSharedData);
+		curl_share_setopt(SharedData, CURLSHOPT_SHARE, CURL_LOCK_DATA_DNS);
+		curl_share_setopt(SharedData, CURLSHOPT_SHARE, CURL_LOCK_DATA_SSL_SESSION);
+#if LIBCURL_VERSION_NUM >= 0x073900
+		curl_share_setopt(SharedData, CURLSHOPT_SHARE, CURL_LOCK_DATA_CONNECT);
+#endif
+	}
+
+	// In a Windows DLL atexit() handlers run while the DLL is unloaded,
+	// under the loader lock, where curl must not be cleaned up either.
+	// Windows frees everything when the process exits anyway.
+#ifndef _WIN32
+	atexit(destroy_curl);
+#endif
 }
 
-#if defined(__GNUC__)
-__attribute__((destructor))
-#else
-	#error Non GCC compiler detected
-#endif
+#ifndef _WIN32
 static void destroy_curl()
 {
+	if (SharedData)
+	{
+		curl_share_cleanup(SharedData);
+		SharedData=0;
+	}
+
+	for (int Lock=0;Lock<CURL_LOCK_DATA_LAST;Lock++)
+		destroyLock(&SharedLocks[Lock]);
+
 	curl_global_cleanup();
+}
+#endif
+
+// Set up curl on first use rather than when the library is loaded: in a
+// Windows DLL that would run under the loader lock, where curl must not
+// be initialised.  Since C++11 the static is initialised once even when
+// requests start on several threads at the same time.
+static void ensure_curl_initialized()
+{
+	static const bool Initialized=(initialize_curl(),true);
+	(void)Initialized;
 }
 
 class MusicBrainz5::CHTTPFetchPrivate
@@ -201,6 +280,8 @@ int MusicBrainz5::CHTTPFetch::Fetch(const std::string& URL, const std::string& R
 	m_d->m_StatusLine.clear();
 	m_d->m_ErrorMessage.clear();
 
+	ensure_curl_initialized();
+
 	CURL *curl=curl_easy_init();
 	if (curl)
 	{
@@ -217,6 +298,9 @@ int MusicBrainz5::CHTTPFetch::Fetch(const std::string& URL, const std::string& R
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, m_d->m_UserAgent.c_str());
 		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, ErrorBuffer);
 		curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+
+		if (SharedData)
+			curl_easy_setopt(curl, CURLOPT_SHARE, SharedData);
 
 		// Abort if the server stops sending data for two minutes
 		curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 1L);
